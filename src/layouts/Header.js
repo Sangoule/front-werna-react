@@ -28,13 +28,13 @@ const Header = () => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
   };
   return (
-    <Navbar color="primary" dark expand="md">
+    <Navbar color="black" dark expand="md">
       <div className="d-flex align-items-center">
         <NavbarBrand href="/" className="d-lg-none">
           <LogoWhite />
         </NavbarBrand>
         <Button
-          color="primary"
+          style={{ backgroundColor: 'black', color: '#FFFFFF' }}
           className="d-lg-none"
           onClick={() => showMobilemenu()}
         >
@@ -81,7 +81,7 @@ const Header = () => {
           </UncontrolledDropdown>
         </Nav>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-          <DropdownToggle color="primary">
+          <DropdownToggle color="black">
             <img
               src={user1}
               alt="profile"
