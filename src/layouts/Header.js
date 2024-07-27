@@ -1,4 +1,5 @@
 import React from "react";
+import { Input } from "reactstrap";
 import { Link } from "react-router-dom";
 import {
   Navbar,
@@ -79,6 +80,12 @@ const Header = () => {
               <DropdownItem>Reset</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
+          {/* Ajout de la barre de recherche */}
+          <Input
+            type="search"
+            placeholder="Recherche..."
+            className="mb-3 ml-4"
+          />
         </Nav>
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
           <DropdownToggle color="black">

@@ -1,9 +1,10 @@
 import { Col, Row } from "reactstrap";
+import FileUploadForm from "../components/FileUploadForm";
 import SalesChart from "../components/dashboard/SalesChart";
 import Feeds from "../components/dashboard/Feeds";
 import ProjectTables from "../components/dashboard/ProjectTable";
 import TopCards from "../components/dashboard/TopCards";
-import Blog from "../components/dashboard/Blog";
+// import Blog from "../components/dashboard/Blog";
 import bg1 from "../assets/images/bg/bg1.jpg";
 import bg2 from "../assets/images/bg/bg2.jpg";
 import bg3 from "../assets/images/bg/bg3.jpg";
@@ -54,8 +55,8 @@ const Starter = () => {
           <TopCards
             bg="bg-light-success text-success"
             title="Profit"
-            subtitle="Yearly Earning"
-            earning="$21k"
+            subtitle="Nombre d'utilisateurs"
+            earning="42"
             icon="bi bi-wallet"
           />
         </Col>
@@ -63,8 +64,8 @@ const Starter = () => {
           <TopCards
             bg="bg-light-danger text-danger"
             title="Refunds"
-            subtitle="Refund given"
-            earning="$1k"
+            subtitle="Nombre de Medecins"
+            earning="16"
             icon="bi bi-coin"
           />
         </Col>
@@ -72,8 +73,8 @@ const Starter = () => {
           <TopCards
             bg="bg-light-warning text-warning"
             title="New Project"
-            subtitle="Yearly Project"
-            earning="456"
+            subtitle="Nombre de Patients"
+            earning="26"
             icon="bi bi-basket3"
           />
         </Col>
@@ -81,29 +82,32 @@ const Starter = () => {
           <TopCards
             bg="bg-light-info text-into"
             title="Sales"
-            subtitle="Weekly Sales"
-            earning="210"
+            subtitle="Predictions effectuées"
+            earning="21"
             icon="bi bi-bag"
           />
         </Col>
       </Row>
       {/***Sales & Feed***/}
       <Row>
-        <Col sm="6" lg="6" xl="7" xxl="8">
+        <Col >
           <SalesChart />
         </Col>
-        <Col sm="6" lg="6" xl="5" xxl="4">
+        {/* <Col sm="6" lg="6" xl="5" xxl="4">
           <Feeds />
-        </Col>
+        </Col> */}
+      </Row>
+      <Row>
+      <FileUploadForm />
       </Row>
       {/***Table ***/}
-      <Row>
+      {/* <Row>
         <Col lg="12">
           <ProjectTables />
         </Col>
-      </Row>
+      </Row> */}
       {/***Blog Cards***/}
-      <Row>
+      {/* <Row>
         {BlogData.map((blg, index) => (
           <Col sm="6" lg="6" xl="3" key={index}>
             <Blog
@@ -115,8 +119,9 @@ const Starter = () => {
             />
           </Col>
         ))}
-      </Row>
+      </Row> */}
     </div>
+
   );
 };
 
