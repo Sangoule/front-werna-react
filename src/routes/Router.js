@@ -1,5 +1,6 @@
 import { lazy,React } from "react";
 import { Navigate } from "react-router-dom";
+import Login from "../views/auth/Login";
 
 /****Layouts*****/
 const FullLayout = lazy(() => import("../layouts/FullLayout.js"));
@@ -16,7 +17,7 @@ const Grid = lazy(() => import("../views/ui/Grid"));
 const Tables = lazy(() => import("../views/ui/Tables"));
 const Forms = lazy(() => import("../views/ui/Forms"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
-
+const AuthLayout = lazy(() => import("../layouts/AuthLayout"));
 /*****Routes******/
 
 const ThemeRoutes = [
@@ -36,6 +37,14 @@ const ThemeRoutes = [
       { path: "/forms", exact: true, element: <Forms /> },
       { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
     ],
+  },
+  {
+    path: "/auth",
+    element: <AuthLayout/>,
+    children: [
+      {path : 'login', element: <Login/>}
+
+    ]
   },
 ];
 
