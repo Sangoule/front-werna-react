@@ -11,7 +11,7 @@ const DossierTable = () => {
   const [dossiers, setDossiers] = useState([]);
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/dossiers/") // Remplacez par l'URL de votre API
+    axios.get("http://127.0.0.1:8000/api/dossiers/create/")
       .then((response) => {
         setDossiers(response.data);
       })

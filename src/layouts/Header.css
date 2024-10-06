@@ -1,0 +1,11 @@
+.text-navy {
+    color: #001f3f !important; /* Bleu marine */
+  }
+  
+  .nav-link:hover {
+    color: #001f3f !important; /* Bleu marine plus clair pour le survol */
+    background-color: rgba(83, 102, 140, 0.7); /* Couleur bleu marine avec opacité réduite */
+    padding: 0.6rem 1.2rem; /* Augmente la taille du rectangle */
+    border-radius: 5px; /* Arrondir les coins du rectangle */
+  }
+  

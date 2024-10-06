@@ -1,0 +1,88 @@
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
+#main-wrapper[data-layout=vertical][data-sidebar-position=fixed] .left-sidebar {
+    position: fixed;
+}
+#main-wrapper[data-layout=vertical] .left-sidebar[data-sidebarbg=skin5], #main-wrapper[data-layout=vertical] .left-sidebar[data-sidebarbg=skin5] ul, #main-wrapper[data-layout=horizontal] .left-sidebar[data-sidebarbg=skin5], #main-wrapper[data-layout=horizontal] .left-sidebar[data-sidebarbg=skin5] ul {
+    background: #233242;
+}
+.left-sidebar {
+    position: absolute;
+    width: 250px;
+    height: 100%;
+    top: 0;
+    z-index: 10;
+    padding-top: 64px;
+    background: #233242;
+}
+.auth-wrapper .auth-box, .customizer, .left-sidebar {
+    box-shadow: 1px 0 20px rgba(0, 0, 0, .08);
+}
+.left-sidebar, .topbar, .topbar .top-navbar .navbar-nav>.nav-item {
+    transition: .2s ease-in;
+}
+article, aside, figcaption, figure, footer, header, hgroup, legend, main, nav, section {
+    display: block;
+}
+* {
+    outline: 0;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+aside {
+    display: block;
+    unicode-bidi: isolate;
+}
+#main-wrapper[data-layout=vertical] .left-sidebar[data-sidebarbg=skin5], #main-wrapper[data-layout=vertical] .left-sidebar[data-sidebarbg=skin5] ul, #main-wrapper[data-layout=horizontal] .left-sidebar[data-sidebarbg=skin5], #main-wrapper[data-layout=horizontal] .left-sidebar[data-sidebarbg=skin5] ul {
+    background: #233242;
+}
+
+.sidebar-nav ul {
+    margin: 0;
+    padding: 0;
+}
+address, dl, ol, p, pre, ul {
+    margin-bottom: 1rem;
+}
+dl, h1, h2, h3, h4, h5, h6, ol, p, pre, ul {
+    margin-top: 0;
+}
+* {
+    outline: 0;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+    unicode-bidi: isolate;
+}
+
+.topbar .top-navbar .navbar-header .navbar-brand {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0 10px;
+    justify-content: space-between;
+}
+
+.navbar-light .navbar-brand, .navbar-light .navbar-brand:focus, .navbar-light .navbar-brand:hover {
+    color: rgba(0, 0, 0, .9);
+}
+.navbar-brand {
+    display: inline-block;
+    padding-top: .33594rem;
+    padding-bottom: .33594rem;
+    margin-right: 1rem;
+    font-size: 1.09375rem;
+    line-height: inherit;
+}

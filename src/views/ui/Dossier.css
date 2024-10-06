@@ -1,0 +1,29 @@
+.dossier-container {
+    display: flex;
+    gap: 30px; /* Espacement entre les dossiers */
+    justify-content: flex-start; /* Aligne les dossiers horizontalement */
+    padding: 20px;
+    flex-wrap: nowrap; /* Empêche les dossiers de passer à la ligne */
+    overflow-x: auto; /* Permet un défilement horizontal si nécessaire */
+  }
+  
+  .dossier-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .dossier-item:hover {
+    background-color: rgba(0, 31, 63, 0.1); /* Changement de couleur de fond au survol */
+  }
+  
+  .dossier-item p {
+    margin-top: 10px;
+    font-size: 18px; /* Augmentation de la taille du texte */
+    color: #333;
+  }
+  

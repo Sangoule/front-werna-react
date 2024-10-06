@@ -1,32 +1,33 @@
 import { Button, Nav, NavItem, Input } from "reactstrap";
-// import Logo from "./Logo";
+import Logo from "../assets/images/image.png";
 import { Link, useLocation } from "react-router-dom";
 import React from "react";
+
 
 const navigation = [
   {
     title: "Dossier",
-    href: "/badges",
+    href: "/dossier",
     icon: "bi bi-patch-check",
   },
   {
     title: "Medecins",
-    href: "/buttons",
+    href: "/medecins",
     icon: "bi bi-hdd-stack",
   },
   {
     title: "Patients",
-    href: "/cards",
+    href: "/patients",
     icon: "bi bi-card-text",
   },
   {
     title: "Prédictions",
-    href: "/grid",
+    href: "/prediction",
     icon: "bi bi-columns",
   },
   {
     title: "Résultats",
-    href: "/table",
+    href: "/resultats",
     icon: "bi bi-layout-split",
   },
   {
@@ -45,19 +46,19 @@ const Sidebar = () => {
   return (
     <div className="p-3">
       <div className="d-flex align-items-center">
-      <div className="row d-flex">
-          <div className="align-items-center col-md-9">
-            <span className="fw-bold">Espace Admin</span>
-          </div>
-          <div className="col-md-3 ">
-            <img
-              src="../assets/images/users/user1.jpg"
-              className="rounded-circle"
-              width="40"
-              height="40"
-            />
-          </div>
+      <div className="d-flex justify-content-center align-items-center">
+        <div className="center">
+          <img
+            src={Logo}
+            className="rounded-circle"
+            width="145px"
+            height="145px"
+            style={{ marginBottom: "0px", marginTop: "0px" }}
+            alt="Logo"
+          />
         </div>
+      </div>
+
         <span className="ms-auto d-lg-none">
           <Button
             close

@@ -1,6 +1,7 @@
 import React from "react";
 import { Input } from "reactstrap";
 import { Link } from "react-router-dom";
+import "./Header.css";
 import {
   Navbar,
   Collapse,
@@ -29,7 +30,7 @@ const Header = () => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
   };
   return (
-    <Navbar color="black" dark expand="md">
+    <Navbar color="White" dark expand="md">
       <div className="d-flex align-items-center">
         <NavbarBrand href="/" className="d-lg-none">
           <LogoWhite />
@@ -58,19 +59,27 @@ const Header = () => {
       </div>
 
       <Collapse navbar isOpen={isOpen}>
-        <Nav className="me-auto" navbar>
-          <NavItem>
-            <Link to="/starter" className="nav-link">
-              Starter
+      <Nav className="w-100 d-flex justify-content-between me-auto" navbar>
+
+           {/* Ajout de la barre de recherche */}
+           <Input
+            type="search"
+            placeholder="Recherche..."
+            className="mb-3 ml-4"
+            style={{ width: "300px" }} // Définissez une largeur plus grande ici
+          />
+          <NavItem className="mx-3">
+            <Link to="/home" className="nav-link text-navy">
+              Home
             </Link>
           </NavItem>
           <NavItem>
-            <Link to="/about" className="nav-link">
+            <Link to="/about" className="nav-link text-navy">
               About
             </Link>
           </NavItem>
           <UncontrolledDropdown inNavbar nav>
-            <DropdownToggle caret nav>
+            <DropdownToggle caret nav className="text-navy">
               DD Menu
             </DropdownToggle>
             <DropdownMenu end>
@@ -80,13 +89,9 @@ const Header = () => {
               <DropdownItem>Reset</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
-          {/* Ajout de la barre de recherche */}
-          <Input
-            type="search"
-            placeholder="Recherche..."
-            className="mb-3 ml-4"
-          />
-        </Nav>
+         
+      </Nav>
+
         <Dropdown isOpen={dropdownOpen} toggle={toggle}>
           <DropdownToggle color="black">
             <img
