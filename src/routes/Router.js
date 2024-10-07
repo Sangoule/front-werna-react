@@ -28,7 +28,7 @@ const ThemeRoutes = [
     path: "/",
     element: <FullLayout />,
     children: [
-      { path: "/", element: <Navigate to="/home" /> },
+      { path: "/", element: <Navigate to="/auth/login" /> },
       { path: "/home", exact: true, element: <Home /> },
       { path: "/about", exact: true, element: <About /> },
       { path: "/alerts", exact: true, element: <Alerts /> },

@@ -64,11 +64,10 @@ const Patients = () => {
         const formData = new FormData();
         
         // Ajout du fichier au FormData
-        formData.append('file', selectedFile);  // Ou 'url' si c'est un lien
+        formData.append('url', selectedFile.url);  // Ou 'url' si c'est un lien
         formData.append('fichier_id', selectedFile.id);  // ID du fichier sélectionné
         formData.append('commentaire', "Le résultat de la prédiction");  // Commentaire
         formData.append('user_id', clickedUserId);  // Ajout de l'ID de l'utilisateur cliqué
-        console.log('formData:', formData);
         formData.forEach((value, key) => {
           console.log(key, value);
         });
@@ -78,7 +77,7 @@ const Patients = () => {
         const token = userData?.access_token; // Assurez-vous que le token est bien stocké dans l'objet userData
 
         // Envoi de la requête de prédiction
-        const response = await fetch('http://127.0.0.1:8000/api/predict', {
+        const response = await fetch('http://127.0.0.1:8000/api/predict/url', {
             method: 'POST',
             body: formData,
             headers: {

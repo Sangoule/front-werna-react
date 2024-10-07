@@ -20,7 +20,7 @@ const Login = () => {
             localStorage.setItem('user', JSON.stringify(userData));
 
             // Rediriger l'utilisateur vers une autre page
-            navigate('/');  
+            navigate('/home');  
             
         } catch (err) {
             console.error("Login failed:", err);

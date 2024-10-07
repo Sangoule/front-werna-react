@@ -1,7 +1,33 @@
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const Medecins = () => {
+  const [medecins, setMedecins] = useState([]);
+  
+  useEffect(() => {
+    const userData = JSON.parse(localStorage.getItem('user'));
+    
+    if (userData) {
+      const userToken = userData.access_token;
+
+      const fetchMedecins = async () => {
+        try {
+          const response = await axios.get('http://localhost:8000/api/medecins/', {
+            headers: {
+              Authorization: `Bearer ${userToken}`, // Envoi du token
+            },
+          });
+          setMedecins(response.data);
+        } catch (error) {
+          console.error("Erreur lors de la récupération des médecins:", error);
+        }
+      };
+
+      fetchMedecins();
+    } else {
+      console.log("No user data found in localStorage.");
+    }
+  }, []);
 
   return (
     <div className="row flex-grow">
@@ -16,66 +42,20 @@ const Medecins = () => {
                   </div>
                 </div>
                 <div className="mt-3">
-                  <div className="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
-                    <div className="d-flex">
-                      <img className="img-sm rounded-10" src="images/faces/face1.jpg" alt="profile" />
-                      <div className="wrapper ms-3">
-                        <p className="ms-1 mb-1 fw-bold">Brandon Washington</p>
-                        <small className="text-muted mb-0">162543</small>
+                  {medecins.map((medecin) => (
+                    <div key={medecin.id} className="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
+                      <div className="d-flex">
+                        <img className="img-sm rounded-10" src={`images/faces/${medecin.photo}`} alt="profile" />
+                        <div className="wrapper ms-3">
+                          <p className="ms-1 mb-1 fw-bold">{medecin.name}</p>
+                          <small className="text-muted mb-0">{medecin.id}</small>
+                        </div>
+                      </div>
+                      <div className="text-muted text-small">
+                        {medecin.lastSeen} ago
                       </div>
                     </div>
-                    <div className="text-muted text-small">
-                      1h ago
-                    </div>
-                  </div>
-                  <div className="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
-                    <div className="d-flex">
-                      <img className="img-sm rounded-10" src="images/faces/face2.jpg" alt="profile" />
-                      <div className="wrapper ms-3">
-                        <p className="ms-1 mb-1 fw-bold">Wayne Murphy</p>
-                        <small className="text-muted mb-0">162543</small>
-                      </div>
-                    </div>
-                    <div className="text-muted text-small">
-                      1h ago
-                    </div>
-                  </div>
-                  <div className="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
-                    <div className="d-flex">
-                      <img className="img-sm rounded-10" src="images/faces/face3.jpg" alt="profile" />
-                      <div className="wrapper ms-3">
-                        <p className="ms-1 mb-1 fw-bold">Katherine Butler</p>
-                        <small className="text-muted mb-0">162543</small>
-                      </div>
-                    </div>
-                    <div className="text-muted text-small">
-                      1h ago
-                    </div>
-                  </div>
-                  <div className="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
-                    <div className="d-flex">
-                      <img className="img-sm rounded-10" src="images/faces/face4.jpg" alt="profile" />
-                      <div className="wrapper ms-3">
-                        <p className="ms-1 mb-1 fw-bold">Matthew Bailey</p>
-                        <small className="text-muted mb-0">162543</small>
-                      </div>
-                    </div>
-                    <div className="text-muted text-small">
-                      1h ago
-                    </div>
-                  </div>
-                  <div className="wrapper d-flex align-items-center justify-content-between pt-2">
-                    <div className="d-flex">
-                      <img className="img-sm rounded-10" src="images/faces/face5.jpg" alt="profile" />
-                      <div className="wrapper ms-3">
-                        <p className="ms-1 mb-1 fw-bold">Rafell John</p>
-                        <small className="text-muted mb-0">Alaska, USA</small>
-                      </div>
-                    </div>
-                    <div className="text-muted text-small">
-                      1h ago
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -84,7 +64,6 @@ const Medecins = () => {
       </div>
     </div>
   );
-
 };
 
 export default Medecins;
