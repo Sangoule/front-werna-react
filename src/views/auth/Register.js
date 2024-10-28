@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRegisterUserMutation } from "../../utils/api/auth/auth.api";
 import "./Register.css";  // Ajouter votre fichier CSS ici
+const logo = require("../../assets/images/logo-bis.png");
 
 const Register = () => {
     const [prenom, setPrenom] = useState("");
@@ -28,13 +29,13 @@ const Register = () => {
     }
 
     return (
-        <div className="main-wrapper">
+        <div className="main-wrapperr">
             <div className="auth-wrapper d-flex no-block justify-content-center align-items-center" style={{ background: "url(../../assets/images/big/auth-bg.jpg) no-repeat center center" }}>
                 <div className="auth-box">
                     <div>
                         <div className="logo">
-                            <span className="db"><img src="../../assets/images/logo-icon.png" alt="logo" /></span>
-                            <h5 className="font-medium m-b-20">Sign Up Avc Predict</h5>
+                            <span className="db"><img src={logo} alt="logo" /></span>
+                            <h5 className="font-medium m-b-20">S'inscrire Avc Predict</h5>
                         </div>
                         <div className="row">
                             <div className="col-12">
@@ -55,7 +56,7 @@ const Register = () => {
                                     <input className="form-control form-control-lg" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                                     <input className="form-control form-control-lg" type="password" placeholder="Confirm Password" required />
                                     {error && <p className="text-danger">Registration failed</p>}
-                                    <button className="btn btn-block btn-lg btn-info" type="submit" disabled={isLoading}>SIGN UP</button>
+                                    <button className="btn btn-lg btn-danger float-end" type="submit" disabled={isLoading}>S'inscrire</button>
                                 </form>
                             </div>
                         </div>

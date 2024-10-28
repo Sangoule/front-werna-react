@@ -1,16 +1,17 @@
+import { useEffect, useState } from "react";
 import { Card, CardBody, CardSubtitle, CardTitle } from "reactstrap";
 import Chart from "react-apexcharts";
-import React from "react";
+
 const SalesChart = () => {
-  const chartoptions = {
+  const [chartData, setChartData] = useState({
     series: [
       {
         name: "Personne Atteint",
-        data: [0, 31, 40, 28, 51, 42, 109, 100],
+        data: [],
       },
       {
         name: "Personne Non Atteint",
-        data: [0, 11, 32, 45, 32, 34, 52, 41],
+        data: [],
       },
     ],
     options: {
@@ -23,25 +24,53 @@ const SalesChart = () => {
       grid: {
         strokeDashArray: 3,
       },
-
       stroke: {
         curve: "smooth",
         width: 1,
       },
       xaxis: {
-        categories: [
-          "Jan",
-          "Fev",
-          "Mar",
-          "Avr",
-          "Mai",
-          "Juin",
-          "Juil",
-          "Aout",
-        ],
+        categories: [],
       },
     },
+  });
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/prediction-summary");
+      const data = await response.json();
+
+      // Structuration des données pour le graphique
+      const positiveCounts = data.map((item) => item.positive_count);
+      const negativeCounts = data.map((item) => item.negative_count);
+      const dates = data.map((item) => item.date.slice(0, 10)); // Formate la date (yyyy-mm-dd)
+
+      setChartData({
+        series: [
+          {
+            name: "Personne Atteint",
+            data: positiveCounts,
+          },
+          {
+            name: "Personne Non Atteint",
+            data: negativeCounts,
+          },
+        ],
+        options: {
+          ...chartData.options,
+          xaxis: {
+            categories: dates,
+          },
+        },
+      });
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données :", error);
+    }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <Card>
       <CardBody>
@@ -53,8 +82,8 @@ const SalesChart = () => {
           type="area"
           width="100%"
           height="390"
-          options={chartoptions.options}
-          series={chartoptions.series}
+          options={chartData.options}
+          series={chartData.series}
         ></Chart>
       </CardBody>
     </Card>
@@ -62,3 +91,4 @@ const SalesChart = () => {
 };
 
 export default SalesChart;
+

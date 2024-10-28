@@ -1,109 +1,80 @@
 import { Card, CardBody, CardTitle, CardSubtitle, Table } from "reactstrap";
-import user1 from "../../assets/images/users/user1.jpg";
-import user2 from "../../assets/images/users/user2.jpg";
-import user3 from "../../assets/images/users/user3.jpg";
-import user4 from "../../assets/images/users/user4.jpg";
-import user5 from "../../assets/images/users/user5.jpg";
-import React from "react";
-const tableData = [
-  {
-    avatar: user1,
-    name: "Hanna Gover",
-    email: "hgover@gmail.com",
-    project: "Flexy React",
-    status: "pending",
-    weeks: "35",
-    budget: "95K",
-  },
-  {
-    avatar: user2,
-    name: "Hanna Gover",
-    email: "hgover@gmail.com",
-    project: "Lading pro React",
-    status: "done",
-    weeks: "35",
-    budget: "95K",
-  },
-  {
-    avatar: user3,
-    name: "Hanna Gover",
-    email: "hgover@gmail.com",
-    project: "Elite React",
-    status: "holt",
-    weeks: "35",
-    budget: "95K",
-  },
-  {
-    avatar: user4,
-    name: "Hanna Gover",
-    email: "hgover@gmail.com",
-    project: "Flexy React",
-    status: "pending",
-    weeks: "35",
-    budget: "95K",
-  },
-  {
-    avatar: user5,
-    name: "Hanna Gover",
-    email: "hgover@gmail.com",
-    project: "Ample React",
-    status: "done",
-    weeks: "35",
-    budget: "95K",
-  },
-];
+import React, { useEffect, useState } from "react";
+import ProgressBar from 'react-bootstrap/ProgressBar';
+import { FaUser } from "react-icons/fa"; // Icône d'utilisateur
+import "./ProjectTable.css"; // Importer un fichier CSS personnalisé
 
 const ProjectTables = () => {
+  const [predictions, setPredictions] = useState([]);
+
+  const fetchPredictions = async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/user/predictions/");
+      const data = await response.json();
+      setPredictions(data);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des prédictions :", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPredictions();
+  }, []);
+
   return (
     <div>
-      <Card>
+      <Card className="shadow-sm">
         <CardBody>
-          <CardTitle tag="h5">Project Listing</CardTitle>
-          <CardSubtitle className="mb-2 text-muted" tag="h6">
-            Overview of the projects
+          <CardTitle tag="h5" className="text-primary mb-4">Résultat des Prédictions</CardTitle>
+          <CardSubtitle className="mb-4 text-muted" tag="h6">
+            Vue d'ensemble des prédictions
           </CardSubtitle>
 
-          <Table className="no-wrap mt-3 align-middle" responsive borderless>
+          <Table className="mt-3 align-middle" responsive hover>
             <thead>
-              <tr>
-                <th>Team Lead</th>
-                <th>Project</th>
-
-                <th>Status</th>
-                <th>Weeks</th>
-                <th>Budget</th>
+              <tr className="table-header">
+                <th>N Prédiction</th>
+                <th>Patient</th>
+                <th>Score</th>
+                <th>Résultat</th>
+                <th>Commentaire</th>
+                <th>Médecin</th>
               </tr>
             </thead>
             <tbody>
-              {tableData.map((tdata, index) => (
-                <tr key={index} className="border-top">
+              {predictions.map((prediction) => (
+                <tr key={prediction.id} className="border-bottom prediction-row">
+                  <td><span className="fw-bold">{prediction.id}</span></td>
                   <td>
-                    <div className="d-flex align-items-center p-2">
-                      <img
-                        src={tdata.avatar}
-                        className="rounded-circle"
-                        alt="avatar"
-                        width="45"
-                        height="45"
-                      />
-                      <div className="ms-3">
-                        <h6 className="mb-0">{tdata.name}</h6>
-                        <span className="text-muted">{tdata.email}</span>
+                    <div className="d-flex align-items-center">
+                      <div>
+                        <h6 className="mb-0">{prediction.patient.prenom} {prediction.patient.nom}</h6>
+                        <small className="text-muted">{prediction.patient.email}</small>
                       </div>
                     </div>
                   </td>
-                  <td>{tdata.project}</td>
-                  <td>
-                    {tdata.status === "pending" ? (
-                      <span className="p-2 bg-danger rounded-circle d-inline-block ms-3"></span>
-                    ) : tdata.status === "holt" ? (
-                      <span className="p-2 bg-warning rounded-circle d-inline-block ms-3"></span>
-                    ) : (
-                      <span className="p-2 bg-success rounded-circle d-inline-block ms-3"></span>
-                    )}
+                  
+                  <td style={{ width: "20%" }}>
+                    <ProgressBar 
+                      now={Math.floor(prediction.score)} 
+                      label={`${Math.floor(prediction.score)}%`} 
+                      variant={prediction.score < 0 ? "success" : prediction.score > 0 ? "warning" : "danger"}
+                    />
                   </td>
-                  <td>{tdata.weeks}</td>
-                  <td>{tdata.budget}</td>
+                  <td>
+                    <span className={`result-badge ${prediction.resultat === "Positif" ? "resultat-positif" : "resultat-negatif"}`}>
+                      {prediction.resultat === "Positif" ? "Positif": "Négatif"}
+                    </span>
+                  </td>
+                  <td>{prediction.commentaire}</td>
+                  <td>
+                    <div className="d-flex align-items-center">
+                      <div>
+                        <h6 className="mb-0">{prediction.medecin.prenom} {prediction.medecin.nom}</h6>
+                        <small className="text-muted">{prediction.medecin.email}</small>
+                      </div>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>

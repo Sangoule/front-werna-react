@@ -1,111 +1,204 @@
-import React, { useEffect, useState } from "react";
-import {
-  Container,
-  Col,
-  Row,
-  Card,
-  CardBody,
-  CardTitle,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-} from "reactstrap";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
+import { Table, Button, Spinner, Alert, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { useNavigate } from "react-router-dom"; // Import pour redirection
 
-const Prediction = () => {
-  const [predictions, setPredictions] = useState([]);
-  const [modal, setModal] = useState(false);
-  const [selectedPrediction, setSelectedPrediction] = useState(null);
-
-  const toggleModal = () => setModal(!modal);
-
-  const fetchPredictions = async () => {
-    const userData = JSON.parse(localStorage.getItem('user'));
-    if (userData) {
-      const userToken = userData.access_token;
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/api/admin/predictions/", {
-          headers: {
-            Authorization: `Bearer ${userToken}`, // Envoi du token
-          },
-        });
-        setPredictions(response.data);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des prédictions:", error);
-      }
-    } else {
-      console.log("No user data found in localStorage.");
-    }
-  };
-
-  const fetchPredictionDetails = async (id) => {
-    const userData = JSON.parse(localStorage.getItem('user'));
-    if (userData) {
-      const userToken = userData.access_token;
-      try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/prediction/${id}/`, {
-          headers: {
-            Authorization: `Bearer ${userToken}`, // Envoi du token
-          },
-        });
-        setSelectedPrediction(response.data);
-        toggleModal(); // Ouvre le modal
-      } catch (error) {
-        console.error("Erreur lors de la récupération des détails de la prédiction:", error.response || error);
-      }
-    } else {
-      console.log("No user data found in localStorage.");
-    }
-  };
+const UserManagement = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const navigate = useNavigate(); // Hook pour la redirection
 
   useEffect(() => {
-    fetchPredictions();
-  }, []);
+    const fetchData = async () => {
+      const userData = JSON.parse(localStorage.getItem("user"));
+      if (userData && userData.access_token) {
+        const userToken = userData.access_token;
+
+        try {
+          const response = await fetch("http://127.0.0.1:8000/api/users/", {
+            headers: { Authorization: `Bearer ${userToken}` },
+          });
+
+          if (!response.ok) {
+            if (response.status === 401) {
+              // Token expiré ou non valide
+              setError("Votre session a expiré. Veuillez vous reconnecter.");
+              localStorage.removeItem("user"); // Supprimez les informations de l'utilisateur
+              navigate("/login"); // Redirige vers la page de connexion
+            } else if (response.status === 403) {
+              setIsAuthorized(false);
+              setError("Vous n'êtes pas autorisé à accéder à cette ressource.");
+            } else {
+              throw new Error("Erreur lors du chargement des utilisateurs");
+            }
+          } else {
+            const usersData = await response.json();
+            setUsers(usersData);
+            setIsAuthorized(true);
+          }
+        } catch (error) {
+          setError(error.message);
+          console.error("Erreur de chargement:", error);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setLoading(false);
+        setError("Utilisateur non authentifié.");
+        navigate("/login"); // Redirige si aucun utilisateur n'est authentifié
+      }
+    };
+
+    fetchData();
+  }, [navigate]);
+
+  const handleBlockUnblockClick = (user, action) => {
+    setSelectedUser(user);
+    setConfirmAction(action);
+    setShowConfirmModal(true);
+  };
+
+  const confirmBlockUnblock = async () => {
+    setShowConfirmModal(false);
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData && userData.access_token && selectedUser) {
+      const userToken = userData.access_token;
+      const action = confirmAction;
+
+      try {
+        const response = await fetch(`http://127.0.0.1:8000/api/user/${selectedUser.id}/${action}/`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${userToken}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email: selectedUser.email }),
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            setError("Votre session a expiré. Veuillez vous reconnecter.");
+            localStorage.removeItem("user");
+            navigate("/login");
+          } else {
+            throw new Error("Erreur lors de la mise à jour de l'utilisateur");
+          }
+        } else {
+          setUsers((prevUsers) =>
+            prevUsers.map((user) =>
+              user.id === selectedUser.id ? { ...user, is_blocked: action === "block" } : user
+            )
+          );
+          alert(`Utilisateur ${action === "block" ? "bloqué" : "débloqué"} avec succès.`);
+        }
+      } catch (error) {
+        setError(error.message);
+      }
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+        <Spinner color="primary" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <Alert color="danger" className="text-center">{error}</Alert>;
+  }
+
+  if (!isAuthorized) {
+    return (
+      <Alert color="danger" className="text-center mt-4">
+        Vous n'êtes pas autorisé à accéder à cette ressource.
+      </Alert>
+    );
+  }
 
   return (
-    <div>
-      <Card>
-        <CardTitle tag="h6" className="border-bottom p-3 mb-0">
-          Liste des Prédictions déjà effectuées
-        </CardTitle>
-        <CardBody>
-          <Container>
-            <Row>
-              {predictions.map((prediction) => (
-                <Col key={prediction.numero} xs="12" sm="6" md="4" lg="3" className="mb-3">
-                  <Card body className="text-center" onClick={() => fetchPredictionDetails(prediction.id)}>
-                    <CardTitle tag="h5">{prediction.resultat ? "Positive" : "Négative"}</CardTitle>
-                    <p>Prédiction Num {prediction.id}</p>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </Container>
-        </CardBody>
-      </Card>
-
-      {/* Modal pour afficher les détails de la prédiction */}
-      <Modal isOpen={modal} toggle={toggleModal}>
-        <ModalHeader toggle={toggleModal}>Détails de la Prédiction</ModalHeader>
-        <ModalBody>
-          {selectedPrediction && (
-            <div>
-              <p><strong>ID:</strong> {selectedPrediction.id}</p>
-              <p><strong>Résultat:</strong> {selectedPrediction.resultat ? "Positive" : "Négative"}</p>
-              <p><strong>Commentaire:</strong> {selectedPrediction.commentaire} est {selectedPrediction.resultat ? "Positive" : "Négative"}</p>
-              <p><strong>ID Fichier:</strong> {selectedPrediction.id_fichier}</p>
-              <p><strong>Fichier:</strong> {selectedPrediction.fichier.url}</p>
-            </div>
+    <div className="container my-4">
+      <h3 className="text-center mb-4">Gestion des Utilisateurs</h3>
+      <Table bordered hover responsive className="table-light shadow-sm">
+        <thead className="table-danger">
+          <tr>
+            <th>Prénom</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>ID</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="text-center">Aucun utilisateur trouvé.</td>
+            </tr>
+          ) : (
+            users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.prenom}</td>
+                <td>{user.nom}</td>
+                <td>{user.email}</td>
+                <td>{user.id}</td>
+                <td>
+                  {user.is_blocked ? (
+                    <span className="badge bg-danger">Bloqué</span>
+                  ) : (
+                    <span className="badge bg-success">Actif</span>
+                  )}
+                </td>
+                <td className="text-center">
+                  <Button
+                    color="danger"
+                    size="sm"
+                    className="me-2"
+                    disabled={user.is_blocked}
+                    onClick={() => handleBlockUnblockClick(user, "block")}
+                  >
+                    Bloquer
+                  </Button>
+                  <Button
+                    color="success"
+                    size="sm"
+                    disabled={!user.is_blocked}
+                    onClick={() => handleBlockUnblockClick(user, "unblock")}
+                  >
+                    Débloquer
+                  </Button>
+                </td>
+              </tr>
+            ))
           )}
+        </tbody>
+      </Table>
+
+      {/* Modale de confirmation */}
+      <Modal isOpen={showConfirmModal} toggle={() => setShowConfirmModal(false)}>
+        <ModalHeader toggle={() => setShowConfirmModal(false)}>
+          Confirmation
+        </ModalHeader>
+        <ModalBody>
+          Êtes-vous sûr de vouloir {confirmAction === "block" ? "bloquer" : "débloquer"}{" "}
+          l'utilisateur {selectedUser?.prenom} {selectedUser?.nom} ?
         </ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={toggleModal}>Fermer</Button>
+          <Button color="danger" onClick={confirmBlockUnblock}>
+            Confirmer
+          </Button>{" "}
+          <Button color="secondary" onClick={() => setShowConfirmModal(false)}>
+            Annuler
+          </Button>
         </ModalFooter>
       </Modal>
     </div>
   );
 };
 
-export default Prediction;
+export default UserManagement;

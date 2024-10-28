@@ -1,15 +1,14 @@
 import { Col, Row } from "reactstrap";
 import FileUploadForm from "../components/FileUploadForm";
 import SalesChart from "../components/dashboard/SalesChart";
-import Feeds from "../components/dashboard/Feeds";
-import ProjectTables from "../components/dashboard/ProjectTable";
 import TopCards from "../components/dashboard/TopCards";
-// import Blog from "../components/dashboard/Blog";
+import React, { useEffect, useState } from "react";
+// import Feeds from "../components/dashboard/Feeds"; // Décommenter si vous l'utilisez
+// import ProjectTables from "../components/dashboard/ProjectTable"; // Décommenter si vous l'utilisez
 import bg1 from "../assets/images/bg/bg1.jpg";
 import bg2 from "../assets/images/bg/bg2.jpg";
 import bg3 from "../assets/images/bg/bg3.jpg";
 import bg4 from "../assets/images/bg/bg4.jpg";
-import React from "react";
 
 const BlogData = [
   {
@@ -47,6 +46,42 @@ const BlogData = [
 ];
 
 const Home = () => {
+  const [counts, setCounts] = useState({
+    users: 0,
+    doctors: 0,
+    patients: 0,
+    predictions: 0,
+  });
+
+  const fetchCounts = async () => {
+    try {
+      const usersResponse = await fetch("http://127.0.0.1:8000/api/users/count/");
+      const usersData = await usersResponse.json();
+      
+      const doctorsResponse = await fetch("http://127.0.0.1:8000/api/medecins/count/");
+      const doctorsData = await doctorsResponse.json();
+      
+      const patientsResponse = await fetch("http://127.0.0.1:8000/api/patients/count/");
+      const patientsData = await patientsResponse.json();
+      
+      const predictionsResponse = await fetch("http://127.0.0.1:8000/api/predictions/count/");
+      const predictionsData = await predictionsResponse.json();
+
+      setCounts({
+        users: usersData.count,
+        doctors: doctorsData.count,
+        patients: patientsData.count,
+        predictions: predictionsData.count,
+      });
+    } catch (error) {
+      console.error("Erreur lors de la récupération des comptes :", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCounts();
+  }, []);
+
   return (
     <div>
       {/***Top Cards***/}
@@ -54,58 +89,56 @@ const Home = () => {
         <Col sm="6" lg="3">
           <TopCards
             bg="bg-light-success text-success"
-            title="Profit"
+            title="Utilisateurs"
             subtitle="Nombre d'utilisateurs"
-            earning="42"
+            earning={counts.users} // Utilisation de la valeur dynamique
             icon="bi bi-wallet"
           />
         </Col>
         <Col sm="6" lg="3">
           <TopCards
             bg="bg-light-danger text-danger"
-            title="Refunds"
-            subtitle="Nombre de Medecins"
-            earning="16"
+            title="Médecins"
+            subtitle="Nombre de Médecins"
+            earning={counts.doctors} // Utilisation de la valeur dynamique
             icon="bi bi-coin"
           />
         </Col>
         <Col sm="6" lg="3">
           <TopCards
             bg="bg-light-warning text-warning"
-            title="New Project"
+            title="Patients"
             subtitle="Nombre de Patients"
-            earning="26"
+            earning={counts.patients} // Utilisation de la valeur dynamique
             icon="bi bi-basket3"
           />
         </Col>
         <Col sm="6" lg="3">
           <TopCards
-            bg="bg-light-info text-into"
-            title="Sales"
-            subtitle="Predictions effectuées"
-            earning="21"
+            bg="bg-light-info text-info" // Corrigé de "text-into" à "text-info"
+            title="Prédictions"
+            subtitle="Prédictions effectuées"
+            earning={counts.predictions} // Utilisation de la valeur dynamique
             icon="bi bi-bag"
           />
         </Col>
       </Row>
       {/***Sales & Feed***/}
       <Row>
-        <Col >
+        <Col>
           <SalesChart />
         </Col>
         {/* <Col sm="6" lg="6" xl="5" xxl="4">
           <Feeds />
-        </Col> */}
+        </Col> */} {/* Décommenter si vous l'utilisez */}
       </Row>
-      <Row>
-      <FileUploadForm />
-      </Row>
+      
       {/***Table ***/}
       {/* <Row>
         <Col lg="12">
           <ProjectTables />
         </Col>
-      </Row> */}
+      </Row> */} {/* Décommenter si vous l'utilisez */}
       {/***Blog Cards***/}
       {/* <Row>
         {BlogData.map((blg, index) => (
@@ -119,9 +152,8 @@ const Home = () => {
             />
           </Col>
         ))}
-      </Row> */}
+      </Row> */} {/* Décommenter si vous l'utilisez */}
     </div>
-
   );
 };
 

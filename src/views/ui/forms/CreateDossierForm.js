@@ -1,20 +1,14 @@
-
-
 import React, { useState } from "react";
 import axios from "axios";
 
-const CreateDossierForm = () => {
-  // State pour les champs du formulaire
+const CreateDossierForm = ({ onClose }) => { // Ajoutez onClose en tant que prop
   const [formData, setFormData] = useState({
     name: "",
-    description: "", // Ajoute ici tous les champs dont tu as besoin
+    description: "",
   });
-
-  // State pour gérer les erreurs et les succès
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
-  // Handler pour les changements dans les champs du formulaire
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -23,14 +17,13 @@ const CreateDossierForm = () => {
     });
   };
 
-  // Handler pour la soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Remplace l'URL par l'endpoint de ton API
       const response = await axios.post("http://127.0.0.1:8000/api/dossiers/create/", formData);
       setSuccess("Dossier créé avec succès !");
-      setFormData({ name: "", description: "" }); // Réinitialiser le formulaire après la soumission
+      setFormData({ name: "", description: "" });
+      onClose(); // Fermez le formulaire après la création du dossier
     } catch (err) {
       setError("Une erreur est survenue. Veuillez réessayer.", err);
     }
@@ -71,7 +64,7 @@ const CreateDossierForm = () => {
             {error && <div className="alert alert-danger">{error}</div>}
             {success && <div className="alert alert-success">{success}</div>}
             <button type="submit" className="btn btn-primary me-2">Créer</button>
-            <button type="button" className="btn btn-light" onClick={() => setFormData({ utilisateur: "", description: "" })}>Annuler</button>
+            <button type="button" className="btn btn-light" onClick={onClose}>Annuler</button> {/* Appel de onClose */}
           </form>
         </div>
       </div>

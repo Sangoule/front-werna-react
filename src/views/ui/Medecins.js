@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Table, Spinner, Alert } from 'react-bootstrap';
 
 const Medecins = () => {
   const [medecins, setMedecins] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem('user'));
@@ -14,12 +17,14 @@ const Medecins = () => {
         try {
           const response = await axios.get('http://localhost:8000/api/medecins/', {
             headers: {
-              Authorization: `Bearer ${userToken}`, // Envoi du token
+              Authorization: `Bearer ${userToken}`,
             },
           });
           setMedecins(response.data);
+          setLoading(false);
         } catch (error) {
-          console.error("Erreur lors de la récupération des médecins:", error);
+          setError("Erreur lors de la récupération des médecins.");
+          setLoading(false);
         }
       };
 
@@ -29,39 +34,48 @@ const Medecins = () => {
     }
   }, []);
 
-  return (
-    <div className="row flex-grow">
-      <div className="col-12 grid-margin stretch-card">
-        <div className="card card-rounded">
-          <div className="card-body">
-            <div className="row">
-              <div className="col-lg-12">
-                <div className="d-flex justify-content-between align-items-center mb-3">
-                  <div>
-                    <h4 className="card-title card-title-dash">Médecins</h4>
-                  </div>
-                </div>
-                <div className="mt-3">
-                  {medecins.map((medecin) => (
-                    <div key={medecin.id} className="wrapper d-flex align-items-center justify-content-between py-2 border-bottom">
-                      <div className="d-flex">
-                        <img className="img-sm rounded-10" src={`images/faces/${medecin.photo}`} alt="profile" />
-                        <div className="wrapper ms-3">
-                          <p className="ms-1 mb-1 fw-bold">{medecin.name}</p>
-                          <small className="text-muted mb-0">{medecin.id}</small>
-                        </div>
-                      </div>
-                      <div className="text-muted text-small">
-                        {medecin.lastSeen} ago
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
+        <Spinner animation="border" variant="primary" />
       </div>
+    );
+  }
+
+  return (
+    <div className="container my-4">
+      <h5 className="text-center text-primary mb-4">Liste des Médecins</h5>
+      {error && <Alert variant="danger" className="text-center">{error}</Alert>}
+      <Table striped bordered hover responsive className="table-light rounded shadow-sm">
+        <thead className="table-danger">
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Spécialité</th>
+            <th>Adresse</th>
+            <th>Téléphone</th>
+            <th>Expérience</th>
+          </tr>
+        </thead>
+        <tbody>
+          {medecins.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="text-center">Aucun médecin trouvé.</td>
+            </tr>
+          ) : (
+            medecins.map((medecin, index) => (
+              <tr key={index}>
+                <td>{medecin.nom}</td>
+                <td>{medecin.email}</td>
+                <td>{medecin.specialite}</td>
+                <td>{medecin.adresse || "N/A"}</td>
+                <td>{medecin.telephone}</td>
+                <td>{medecin.experience} ans</td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </Table>
     </div>
   );
 };

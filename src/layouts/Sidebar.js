@@ -1,5 +1,5 @@
 import { Button, Nav, NavItem, Input } from "reactstrap";
-import Logo from "../assets/images/image.png";
+import Logo from "../assets/images/logo-bis.png";
 import { Link, useLocation } from "react-router-dom";
 import React from "react";
 
@@ -21,8 +21,8 @@ const navigation = [
     icon: "bi bi-card-text",
   },
   {
-    title: "Prédictions",
-    href: "/prediction",
+    title: "Gestions des comptes",
+    href: "/users/managements/",
     icon: "bi bi-columns",
   },
   {

@@ -8,9 +8,7 @@
 .justify-content-center {
     justify-content: center !important;
 }
-.d-flex {
-    display: flex !important;
-}
+
 * {
     outline: 0;
 }
@@ -98,6 +96,14 @@ body, caption {
 
 .preloader {
     display: none; /* Masquer par défaut, à moins que vous ne souhaitiez l'afficher */
+}
+main-wrapperr {
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-color: rgba(229, 220, 220, 0.7);
+    background-blend-mode: darken;
 }
 
 @media (max-width: 768px) {
