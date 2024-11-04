@@ -31,8 +31,8 @@ const navigation = [
     icon: "bi bi-layout-split",
   },
   {
-    title: "Notifications",
-    href: "/forms",
+    title: "Logs",
+    href: "/logs/",
     icon: "bi bi-textarea-resize",
   },
 ];

@@ -35,7 +35,7 @@ export const AuthApi = createApi({
     // Connexion de l'utilisateur
     loginUser: build.mutation<LoginResult, LoginFormData>({
       query: (data) => ({
-        url: "login/",
+        url: "login/web/",
         method: "POST",
         body: data,
       }),

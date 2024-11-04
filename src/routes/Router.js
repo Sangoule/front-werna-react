@@ -21,6 +21,7 @@ const Forms = lazy(() => import("../views/ui/LogsViewer"));
 const Breadcrumbs = lazy(() => import("../views/ui/Breadcrumbs"));
 const AuthLayout = lazy(() => import("../layouts/AuthLayout"));
 const Fichiers = lazy(() => import("../views/ui/Fichiers"));
+const RequestResetPassword = lazy(() => import("../views/auth/RequestResetPassword"));
 /*****Routes******/
 
 
@@ -38,9 +39,10 @@ const ThemeRoutes = [
       { path: "/patients", exact: true, element: <Patients /> },
       { path: "/users/managements/", exact: true, element: <Prediction /> },
       { path: "/resultats", exact: true, element: <Resultats /> },
-      { path: "/forms", exact: true, element: <Forms /> },
+      { path: "/logs", exact: true, element: <Forms /> },
       { path: "/breadcrumbs", exact: true, element: <Breadcrumbs /> },
       { path: "/fichiers/:dossierId", exact: true, element: <Fichiers /> },
+      
       
     ],
   },
@@ -49,8 +51,8 @@ const ThemeRoutes = [
     element: <AuthLayout/>,
     children: [
       {path : 'login', element: <Login/>},
-      {path : 'register', element: <Register/>}
-
+      {path : 'register', element: <Register/>},
+      { path : "/auth/forgot-password/", element: <RequestResetPassword/>},
     ]
   }
 ];

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "./Login.css";
 import { FaUser, FaPencilAlt } from 'react-icons/fa';
 import { useLoginUserMutation } from "../../utils/api/auth/auth.api";
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 const logo = require("../../assets/images/logo-bis.png");
 
 const Login = () => {
@@ -20,6 +20,11 @@ const Login = () => {
         } catch (err) {
             console.error("Login failed:", err);
         }
+    };
+
+    // Gestion de la connexion avec Google
+    const handleGoogleLogin = () => {
+        window.location.href = "http://localhost:8000/api/auth/google/login"; // Remplacez par l'URL de votre backend
     };
 
     return (
@@ -72,16 +77,21 @@ const Login = () => {
                                             <div className="custom-control custom-checkbox">
                                                 <input type="checkbox" className="custom-control-input" id="customCheck1" />
                                                 <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-                                                <a href="#recover" className="text-dark float-right">Forgot pwd?</a>
+                                                <a href="/auth/forgot-password/" className="text-dark float-right">Forgot pwd?</a>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="form-group text-center">
                                         <button className="btn btn-block btn-lg btn-primary" type="submit" disabled={isLoading}>Se connecter</button>
                                     </div>
-                                    <div className="social-icons">
-                                        <a href="#facebook" className="btn btn-facebook m-l-5"><i className="fab fa-facebook"></i></a>
-                                        <a href="#google" className="btn btn-googleplus"><i className="fab fa-google-plus"></i></a>
+                                    <div className="social-icons text-center">
+                                        <button 
+                                            type="button" 
+                                            className="btn btn-googleplus" 
+                                            onClick={handleGoogleLogin}
+                                        >
+                                            <i className="fab fa-google-plus"></i> Google
+                                        </button>
                                     </div>
                                     <div className="form-group text-center m-t-10">
                                         Vous n'avez pas de compte ? <a href="/auth/register/" className="text-info m-l-5"><b>S'inscrire</b></a>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Table, Button, Spinner, Alert, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { useNavigate } from "react-router-dom"; // Import pour redirection
+import { useNavigate } from "react-router-dom";
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
@@ -10,50 +10,49 @@ const UserManagement = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [confirmAction, setConfirmAction] = useState(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const navigate = useNavigate(); // Hook pour la redirection
+  const navigate = useNavigate();
+
+  // Fonction pour rafraîchir la liste des utilisateurs
+  const fetchUsers = async () => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    if (userData && userData.access_token) {
+      const userToken = userData.access_token;
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/users/", {
+          headers: { Authorization: `Bearer ${userToken}` },
+        });
+
+        if (!response.ok) {
+          if (response.status === 401) {
+            setError("Votre session a expiré. Veuillez vous reconnecter.");
+            localStorage.removeItem("user");
+            navigate("/login");
+          } else if (response.status === 403) {
+            setIsAuthorized(false);
+            setError("Vous n'êtes pas autorisé à accéder à cette ressource.");
+          } else {
+            throw new Error("Erreur lors du chargement des utilisateurs");
+          }
+        } else {
+          const usersData = await response.json();
+          setUsers(usersData);
+          setIsAuthorized(true);
+        }
+      } catch (error) {
+        setError(error.message);
+        console.error("Erreur de chargement:", error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+      setError("Utilisateur non authentifié.");
+      navigate("/login");
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const userData = JSON.parse(localStorage.getItem("user"));
-      if (userData && userData.access_token) {
-        const userToken = userData.access_token;
-
-        try {
-          const response = await fetch("http://127.0.0.1:8000/api/users/", {
-            headers: { Authorization: `Bearer ${userToken}` },
-          });
-
-          if (!response.ok) {
-            if (response.status === 401) {
-              // Token expiré ou non valide
-              setError("Votre session a expiré. Veuillez vous reconnecter.");
-              localStorage.removeItem("user"); // Supprimez les informations de l'utilisateur
-              navigate("/login"); // Redirige vers la page de connexion
-            } else if (response.status === 403) {
-              setIsAuthorized(false);
-              setError("Vous n'êtes pas autorisé à accéder à cette ressource.");
-            } else {
-              throw new Error("Erreur lors du chargement des utilisateurs");
-            }
-          } else {
-            const usersData = await response.json();
-            setUsers(usersData);
-            setIsAuthorized(true);
-          }
-        } catch (error) {
-          setError(error.message);
-          console.error("Erreur de chargement:", error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        setLoading(false);
-        setError("Utilisateur non authentifié.");
-        navigate("/login"); // Redirige si aucun utilisateur n'est authentifié
-      }
-    };
-
-    fetchData();
+    fetchUsers(); // Charger les utilisateurs à chaque rafraîchissement de la page
   }, [navigate]);
 
   const handleBlockUnblockClick = (user, action) => {
@@ -88,6 +87,7 @@ const UserManagement = () => {
             throw new Error("Erreur lors de la mise à jour de l'utilisateur");
           }
         } else {
+          // Mettre à jour le statut de l'utilisateur dans la liste sans rechargement complet
           setUsers((prevUsers) =>
             prevUsers.map((user) =>
               user.id === selectedUser.id ? { ...user, is_blocked: action === "block" } : user
