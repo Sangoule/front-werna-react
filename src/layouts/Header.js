@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import React from "react";
 import { Input } from "reactstrap";
 import { Link } from "react-router-dom";
@@ -18,6 +19,7 @@ import {
 import { ReactComponent as LogoWhite } from "../assets/images/logos/xtremelogowhite.svg";
 import user1 from "../assets/images/users/user1.jpg";
 
+
 const Header = () => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [dropdownOpen, setDropdownOpen] = React.useState(false);
@@ -29,6 +31,21 @@ const Header = () => {
   const showMobilemenu = () => {
     document.getElementById("sidebarArea").classList.toggle("showSidebar");
   };
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    // Supprime les données de l'utilisateur du stockage local
+    localStorage.removeItem('user');
+    
+    // Redirige vers la page de connexion ou la page d'accueil
+    navigate('/auth/login');
+  }
+  const handleLogs = () => {
+    navigate('/logs');
+  }
+  const handleUsers = () => {
+    navigate('/users/managements/');
+  }
   return (
     <Navbar color="White" dark expand="md">
       <div className="d-flex align-items-center">
@@ -75,19 +92,11 @@ const Header = () => {
           </NavItem>
           <NavItem>
             <Link to="/about" className="nav-link text-navy">
-              About
+              A propos
             </Link>
           </NavItem>
           <UncontrolledDropdown inNavbar nav>
-            <DropdownToggle caret nav className="text-navy">
-              DD Menu
-            </DropdownToggle>
-            <DropdownMenu end>
-              <DropdownItem>Option 1</DropdownItem>
-              <DropdownItem>Option 2</DropdownItem>
-              <DropdownItem divider />
-              <DropdownItem>Reset</DropdownItem>
-            </DropdownMenu>
+            
           </UncontrolledDropdown>
          
       </Nav>
@@ -103,12 +112,10 @@ const Header = () => {
           </DropdownToggle>
           <DropdownMenu>
             <DropdownItem header>Info</DropdownItem>
-            <DropdownItem>My Account</DropdownItem>
-            <DropdownItem>Edit Profile</DropdownItem>
+            <DropdownItem onClick={handleLogs}>Logs</DropdownItem>
+            <DropdownItem onClick={handleUsers}>Liste des Utilisateur</DropdownItem>
             <DropdownItem divider />
-            <DropdownItem>My Balance</DropdownItem>
-            <DropdownItem>Inbox</DropdownItem>
-            <DropdownItem>Logout</DropdownItem>
+            <DropdownItem onClick={handleLogout}>Se déconecter</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </Collapse>

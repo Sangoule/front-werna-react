@@ -9,7 +9,7 @@ const ForgotPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
-  const [step, setStep] = useState(1); // 1: demande de réinitialisation, 2: saisie du code et nouveau mot de passe
+  const [step, setStep] = useState(1); // 1: demande de réinitialisation, 2: saisie du code et nouveau mot de passe 
   const [showPassword, setShowPassword] = useState(false); 
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);    
 
@@ -50,7 +50,7 @@ const ForgotPassword = () => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/api/password-reset-confirm/", {
+      const response = await fetch("http://127.0.0.1:8000/api/reset-password/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -59,8 +59,8 @@ const ForgotPassword = () => {
       });
 
       if (response.ok) {
-        setMessage("Votre mot de passe a été réinitialisé avec succès.");
-        setStep(1); // Retourne à l'étape 1 pour d'autres demandes de réinitialisation
+        setMessage("Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter.");
+        setStep(-1); // Retourne à l'étape 1 pour d'autres demandes de réinitialisation
       } else {
         const data = await response.json();
         setError(data.detail || "Une erreur s'est produite.");

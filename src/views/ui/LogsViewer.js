@@ -52,7 +52,7 @@ const LogsViewer = () => {
 
   return (
     <div className="container my-4">
-      <h3 className="text-center mb-4">Logs de l'Application</h3>
+      <h3 className="mb-4 text-center text-primary">Logs de l'Application</h3>
       <div className="list-group">
         {logs.length > 0 ? (
           logs.map((log, index) => renderLogItem(log, index))

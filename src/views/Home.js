@@ -9,6 +9,9 @@ import bg1 from "../assets/images/bg/bg1.jpg";
 import bg2 from "../assets/images/bg/bg2.jpg";
 import bg3 from "../assets/images/bg/bg3.jpg";
 import bg4 from "../assets/images/bg/bg4.jpg";
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode'; // Utilisez cette syntaxe sans `default`
+
 
 const BlogData = [
   {
@@ -46,6 +49,7 @@ const BlogData = [
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
   const [counts, setCounts] = useState({
     users: 0,
     doctors: 0,
@@ -77,7 +81,27 @@ const Home = () => {
       console.error("Erreur lors de la récupération des comptes :", error);
     }
   };
+  useEffect(() => {
+    // Vérifie si un utilisateur est stocké dans le localStorage
+    const storedUser = JSON.parse(localStorage.getItem("user"));
 
+    if (!storedUser) {
+      // Vérifie si un token est présent dans les cookies
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('access_token='))
+        ?.split('=')[1];
+      
+      if (token) {
+        const userData = jwtDecode(token);
+        localStorage.setItem('user', JSON.stringify(userData));
+
+        console.log("Utilisateur connecté:", userData);
+      } else {
+        navigate('/auth/login'); // Redirige vers la page de connexion si aucun token n'est trouvé
+      }
+    }
+  }, [navigate]);
   useEffect(() => {
     fetchCounts();
   }, []);

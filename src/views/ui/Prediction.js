@@ -15,6 +15,7 @@ const UserManagement = () => {
   // Fonction pour rafraîchir la liste des utilisateurs
   const fetchUsers = async () => {
     const userData = JSON.parse(localStorage.getItem("user"));
+    
     if (userData && userData.access_token) {
       const userToken = userData.access_token;
       try {
@@ -123,7 +124,7 @@ const UserManagement = () => {
 
   return (
     <div className="container my-4">
-      <h3 className="text-center mb-4">Gestion des Utilisateurs</h3>
+      <h3 className="mb-4 text-center text-primary">Gestion des Utilisateurs</h3>
       <Table bordered hover responsive className="table-light shadow-sm">
         <thead className="table-danger">
           <tr>

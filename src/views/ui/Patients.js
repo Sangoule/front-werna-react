@@ -62,7 +62,7 @@ const Patients = () => {
 
   return (
     <div className="container my-4">
-      <h5 className="mb-4 text-center text-primary">Liste des Patients</h5>
+      <h3 className="mb-4 text-center text-primary">Liste des Patients</h3>
       {error && <Alert variant="danger" className="text-center">{error}</Alert>}
       <Table striped bordered hover responsive className="table-light rounded shadow-sm">
         <thead className="table-danger">

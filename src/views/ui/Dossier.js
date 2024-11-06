@@ -52,15 +52,7 @@ const Dossier = () => {
           <p>Dossier N{dossier.id}</p>
         </div>
       ))}
-      <div 
-        className="dossier-item col-md-3" 
-        onClick={handleCreateNew} 
-        style={{ cursor: "pointer" }}
-      >
-        <FontAwesomeIcon icon={faPlusCircle} size="6x" color="#3498db" />
-        <p>Nouveau Dossier</p>
-      </div>
-      {showForm && <CreateDossierForm onClose={handleCloseForm} />} {/* Passez onClose */}
+      
     </div>
   );
 };

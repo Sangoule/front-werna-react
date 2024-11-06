@@ -44,7 +44,7 @@ const Medecins = () => {
 
   return (
     <div className="container my-4">
-      <h5 className="text-center text-primary mb-4">Liste des Médecins</h5>
+      <h3 className="text-center text-primary mb-4">Liste des Médecins</h3>
       {error && <Alert variant="danger" className="text-center">{error}</Alert>}
       <Table striped bordered hover responsive className="table-light rounded shadow-sm">
         <thead className="table-danger">
