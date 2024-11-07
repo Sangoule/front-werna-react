@@ -22,10 +22,10 @@ const Fichiers = () => {
 
   return (
     <div className="container my-4">
-      <button className="btn btn-secondary mb-3" onClick={() => navigate(-1)}>
+      <button className="btn btn-primary mb-3" onClick={() => navigate(-1)}>
         &larr; Retour
       </button>
-      <h3 className="text-center mb-4">Images dans le Dossier N° {dossierId}</h3>
+      <h3 className="text-center mb-4 text-primary">Images dans le Dossier N° {dossierId}</h3>
       {fichiers.length > 0 ? (
         <div className="row">
           {fichiers.map(fichier => (

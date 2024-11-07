@@ -84,19 +84,17 @@ const Home = () => {
   useEffect(() => {
     // Vérifie si un utilisateur est stocké dans le localStorage
     const storedUser = JSON.parse(localStorage.getItem("user"));
-
     if (!storedUser) {
       // Vérifie si un token est présent dans les cookies
       const token = document.cookie
         .split('; ')
         .find(row => row.startsWith('access_token='))
         ?.split('=')[1];
-      
+      console.log("Token trouvé:", token);
       if (token) {
         const userData = jwtDecode(token);
         localStorage.setItem('user', JSON.stringify(userData));
-
-        console.log("Utilisateur connecté:", userData);
+        console.log("Utilisateur connecté home:", userData);
       } else {
         navigate('/auth/login'); // Redirige vers la page de connexion si aucun token n'est trouvé
       }
