@@ -23,6 +23,7 @@ const AuthLayout = lazy(() => import("../layouts/AuthLayout"));
 const Fichiers = lazy(() => import("../views/ui/Fichiers"));
 const RequestResetPassword = lazy(() => import("../views/auth/RequestResetPassword"));
 const PrivateRoute = lazy(() => import("../views/ui/PrivateRoute"));
+const TermsOfService = lazy(() => import("../views/ui/TermsOfService"));
 /*****Routes******/
 
 
@@ -60,6 +61,7 @@ const ThemeRoutes = [
       {path : 'login', element: <Login/>},
       {path : 'register', element: <Register/>},
       { path : "/auth/forgot-password/", element: <RequestResetPassword/>},
+      { path : "/auth/terms-of-service/", element: <TermsOfService/>},
     ]
   }
 ];
