@@ -10,7 +10,7 @@ import {
   ResetPasswordFormData,
   RegisterFormData,
 } from "./auth.type";
-const ApiBaseUrl = "http://0.0.0.0:8000";
+const ApiBaseUrl = "http://localhost:8000";
 
 export const AuthApi = createApi({
   reducerPath: "auth",
@@ -22,16 +22,16 @@ export const AuthApi = createApi({
     // Enregistrement de l'utilisateur
     registerUser: build.mutation<
       AuthState["user"],
-      RegisterFormData | FormData
-    >({
+      RegisterFormData>({
       query: (data) => ({
         url: "users/",
         method: "POST",
         body: data,
       }),
       invalidatesTags: ["auth"],
-      transformResponse: ({ data }) => data,
+    
     }),
+    
     // Connexion de l'utilisateur
     loginUser: build.mutation<LoginResult, LoginFormData>({
       query: (data) => ({

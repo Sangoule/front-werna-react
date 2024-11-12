@@ -37,8 +37,14 @@ export interface AuthState {
   }
 
 
-  export interface RegisterFormData {
+export interface RegisterFormData {
+    prenom: string;
+    nom: string;
+    profil: string;
+    age: number;
+    sexe: string;
+    adresse: string;
+    numero: number; // ou number
     email: string;
     password: string;
-    confirmPassword: string;
-  }
+ } 

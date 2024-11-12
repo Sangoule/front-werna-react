@@ -90,7 +90,7 @@ const Login = () => {
                                             className="btn btn-googleplus" 
                                             onClick={handleGoogleLogin}
                                         >
-                                            <i className="fab fa-google-plus"></i> Google
+                                            <i className="fab btn-lg fa-google-plus text-dark  ">Google</i> 
                                         </button>
                                     </div>
                                     <div className="form-group text-center m-t-10">

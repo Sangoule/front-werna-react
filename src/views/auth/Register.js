@@ -65,9 +65,9 @@ const Register = () => {
         e.preventDefault();
         try {
             await registerUser({ prenom, nom, profil, age, sexe, adresse, numero, email, password });
-            navigate('/auth/login');
+            navigate("/auth/login");
         } catch (err) {
-            console.error(err);
+            console.log(err.data);
             setError("Erreur lors de l'enregistrement.");
         }
     }
