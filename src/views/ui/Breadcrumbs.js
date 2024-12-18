@@ -22,11 +22,11 @@ const Breadcrumbs = () => {
           </CardTitle>
           <CardBody className="">
             <Breadcrumb>
-              <BreadcrumbItem active>Home</BreadcrumbItem>
+              <BreadcrumbItem active>Acceuil</BreadcrumbItem>
             </Breadcrumb>
             <Breadcrumb>
               <BreadcrumbItem>
-                <a href="/">Home</a>
+                <a href="/">Acceuil</a>
               </BreadcrumbItem>
               <BreadcrumbItem active>Library</BreadcrumbItem>
             </Breadcrumb>

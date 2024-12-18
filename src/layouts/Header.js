@@ -87,7 +87,7 @@ const Header = () => {
           />
           <NavItem className="mx-3">
             <Link to="/home" className="nav-link text-navy">
-              Home
+              Accueil
             </Link>
           </NavItem>
           <NavItem>
